@@ -1,0 +1,18 @@
+name: Weekly Free Digest ($0 Plan)
+
+on:
+  schedule:
+    # Every Monday at 8:00 AM UTC (3:00 AM Panama)
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  dispatch_digest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Weekly Digest API
+        run: |
+          curl -X GET "${{ secrets.NEXT_PUBLIC_APP_URL }}/api/cron/sync-tenders?digest=true" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            --fail --silent --show-error
